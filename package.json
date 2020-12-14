@@ -4,12 +4,17 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "next build && next export",
     "start": "next start"
   },
   "dependencies": {
+    "copy-to-clipboard": "^3.3.1",
+    "lodash": "^4.17.20",
     "next": "10.0.3",
     "react": "17.0.1",
     "react-dom": "17.0.1"
+  },
+  "devDependencies": {
+    "prettier": "^2.2.1"
   }
 }
