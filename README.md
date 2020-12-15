@@ -14,7 +14,7 @@ npm start dev -- --open
 ## TODO
 
 - [ ] ensure compat with https://ohmybuck.com/2020-09-23-06-15-branch-name-enforcement/
-- [ ] better reactivity
-- [ ] branchna.me deployment
+- [x] better reactivity
+- [x] branchna.me deployment
 - [ ] testing
-- [ ] click-to-copy
+- [x] click-to-copy
