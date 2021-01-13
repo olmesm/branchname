@@ -11,10 +11,20 @@ export default function Home() {
   const [copiedTimeout, setCopiedTimeout] = useState(false);
   const [output, setOutput] = useState({
     "branch-prefix": "feature",
+    "is-github-issue": false,
     description: "I like clean code",
   });
-
   useEffect(() => {
+    // if (output["is-github-issue"]) {
+    //   setOutputString(
+    //     `git checkout -b ${output["branch-prefix"]}/${snakeCase(
+    //       output.description
+    //     )}`
+    //   );
+
+    //   return;
+    // }
+
     setOutputString(
       `git checkout -b ${output["branch-prefix"]}/${snakeCase(
         output.description
@@ -33,8 +43,13 @@ export default function Home() {
   }, [copiedTimeout]);
 
   const onSubmit = (e) => e.preventDefault();
-  const updatePrefix = (e) => {
-    setOutput((output) => ({ ...output, [e.target.name]: e.target.value }));
+  const updatePrefix = (e, override) => {
+    const { value } = override || e.target;
+
+    setOutput((currentState) => ({
+      ...currentState,
+      [e.target.name]: value,
+    }));
   };
 
   const inputEl = useRef(null);
@@ -57,19 +72,44 @@ export default function Home() {
       <main>
         <h1>Branch Name Constructor</h1>
 
-        <form id="form" onSubmit={onSubmit} onInput={updatePrefix}>
-          <select name="branch-prefix" defaultValue={output["branch-prefix"]}>
-            <option value="feature">feature</option>
-            <option value="bug">bug</option>
-            <option value="patch">patch</option>
-          </select>
+        <form id="form" onSubmit={onSubmit} onChange={updatePrefix}>
+          {/* <fieldset>
+            <label htmlFor="is-github-issue">Github Issue?</label>
+            <input
+              name="is-github-issue"
+              id="is-github-issue"
+              type="checkbox"
+              onChange={(e) => {
+                e.stopPropagation();
 
-          <input
-            ref={inputEl}
-            type="input"
-            name="description"
-            placeholder={output.description}
-          />
+                updatePrefix(e, { value: !output["is-github-issue"] });
+              }}
+            />
+          </fieldset> */}
+
+          <fieldset>
+            <label htmlFor="branch-prefix">Branch Prefix</label>
+            <select
+              id="branch-prefix"
+              name="branch-prefix"
+              defaultValue={output["branch-prefix"]}
+            >
+              <option value="feature">feature</option>
+              <option value="bug">bug</option>
+              <option value="patch">patch</option>
+            </select>
+          </fieldset>
+
+          <fieldset>
+            <label htmlFor="description">Description</label>
+            <input
+              id="description"
+              ref={inputEl}
+              type="input"
+              name="description"
+              placeholder={output.description}
+            />
+          </fieldset>
         </form>
 
         <hr />
@@ -81,14 +121,14 @@ export default function Home() {
             flexDirection: "row",
             justifyContent: "space-between",
             alignItems: "center",
-            background: copiedTimeout ? "#29b5e061": "",
+            background: copiedTimeout ? "#29b5e061" : "",
           }}
           onClick={() => {
             setCopiedTimeout(true);
             copy(outputString);
           }}
         >
-          <span style={{}}>{outputString}</span>
+          <span>{outputString}</span>
           <span
             style={{
               borderRadius: "0.5rem",
